@@ -79,7 +79,7 @@ function print(str: any) {
     </div>
 
     <!-- SubTask -->
-    <div class="flex flex-col " >
+    <div class="flex flex-col " v-if="!isCollapsed">
       <Todo v-for="i in store.childCount(index)" :index="index + (i-1)" :key="_uniqueId()" />
     </div>
 
