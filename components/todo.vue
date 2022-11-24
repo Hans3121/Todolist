@@ -1,22 +1,27 @@
 <script setup lang="ts">
 
 import _uniqueId from 'lodash/uniqueId'
+import {Ref} from 'vue'
 
-const todos = defineProps({
-  index: {
-    type: String,
-    default: ""
-  },
+const todos = defineProps<{
+  index?: number[]
+}>();
 
-});
 const store = useTodoList(); // TodoList Store
 
-const index = ref(todos.index); // Index to reference this task object
-const task = ref(store.task(index.value)); // Task Object
+// Template
+let index: Ref<number[]>;
+if (todos.index) {
+  index = ref(todos.index); // Index to reference this task object
+} else {
+  index = ref([])
+}
+const task = ref(store.task(index.value)); 
 const isCollapsed = ref(false);
-
 const isNotRoot = todos.index? true : false;
 
+
+// Styles
 const colorPallete = [
   "#f87171",
   "#fb923c",
@@ -80,7 +85,7 @@ function print(str: any) {
 
     <!-- SubTask -->
     <div class="flex flex-col " v-if="!isCollapsed">
-      <Todo v-for="i in store.childCount(index)" :index="index + (i-1)" :key="_uniqueId()" />
+      <Todo v-for="i in store.childCount(index)" :index="[...index, i-1]" :key="_uniqueId()" />
     </div>
 
   </div>

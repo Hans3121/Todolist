@@ -1,11 +1,17 @@
 
 
-function searchIndex(index: string, object: any) {
+function searchIndex(index: number[], object: any) {
   let item = object;
-  index.split('').forEach((i: any)=>{
+  index.forEach((i: any)=>{
     item = item.children[i]
   })
   return item
+}
+
+interface Todo {
+  children?: Todo[],
+  collapse?: boolean,
+  task?: string
 }
 
 // Data structure of todo list : 
@@ -31,33 +37,34 @@ export const useTodoList = defineStore('todo', {
 
   getters: {
     task : (state) => {
-      return (index: string) => searchIndex(index, state.todoList).task
+      return (index: number[]) => searchIndex(index, state.todoList).task
     },
     childCount : (state) => {
-      return (index: string) => searchIndex(index, state.todoList).children?.length
+      return (index: number[]) => searchIndex(index, state.todoList).children?.length
     }
   },
   
   actions: {
-    editTask(index: string, newTask: string) {
+    editTask(index: number[], newTask: string) {
       let _task:any = searchIndex(index, this.todoList);
       _task.task = newTask
     },
     // Remove Task
-    removeTask(index: string) {
-      let item:any = this.todoList;
-      let indexList = index.split("");
-      let final:any = indexList.pop();
+    removeTask(index: number[]) {
+      let item: Todo = this.todoList;
+      let final = index.pop();
 
-      indexList.forEach((i: any)=>{
-        item = item.children[i]
+      index.forEach((i: any)=>{
+        if (item.children){
+          item = item.children[i]
+        }
       })
 
-      item.children.splice(final, 1);
+      if (final) { item.children?.splice(final, 1); }    
     },
     // AddTask
-    addTask(index: string) {
-      let _task:any = searchIndex(index, this.todoList);
+    addTask(index: number[]) {
+      let _task = searchIndex(index, this.todoList);
       if (!_task.children) {
         _task.children = []
       }
