@@ -11,7 +11,7 @@ export const useFirestore = defineStore("firestore", {
   actions: {
     init() {
       this.db = getFirestore(useNuxtApp().$firebaseApp);
-      // connectFirestoreEmulator(this.db, 'localhost', 8080)
+      connectFirestoreEmulator(this.db, 'localhost', 8080)
     },
 
     async saveData(uid: any, data:any) {
