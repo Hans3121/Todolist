@@ -19,7 +19,7 @@ function saveData() {
 
   <NuxtLayout>
     <div class="flex flex-col items-stretch w-full">
-      <Todo class=" mt-4 w-full" />
+      <Todo class=" mt-4 w-full" :index="[]"/>
     </div>
 
     <button class="btn m-8 mb-2" @click="saveData">
