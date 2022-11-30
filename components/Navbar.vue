@@ -3,7 +3,15 @@
     <!-- Hello User___ -->
     <h1>Hello {{useAuth().user?.displayName}}</h1>
 
-    <!-- Log Out Button -->
-    <button @click="useAuth().signOut" class="btn btn-warning">Log Out</button>
+    <!-- Create button to open settings
+      Set Text color and Background color, maybe use another page
+      Add a button to revert to defaults
+    
+    -->
+    <div class="flex gap-2">
+      <NuxtLink to="/settings" class="button">Settings</NuxtLink>
+      <!-- Log Out Button -->
+      <button @click="useAuth().signOut" class="button">Log Out</button>
+    </div>
   </div>
 </template>

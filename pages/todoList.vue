@@ -8,7 +8,7 @@ let isSaving = ref(false);
 
 function saveData() {
   isSaving.value = true;
-  firestore.saveData(auth.user.uid, todolist.todoList)
+  firestore.saveData()
     .then(()=>{
       isSaving.value = false;
     })
@@ -22,7 +22,7 @@ function saveData() {
       <Todo class=" mt-4 w-full" :index="[]"/>
     </div>
 
-    <button class="btn m-8 mb-2" @click="saveData">
+    <button class="button m-8 mb-2" @click="saveData">
       Save
     </button>
 

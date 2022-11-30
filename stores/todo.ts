@@ -1,6 +1,3 @@
-import { Todo } from "~~/.nuxt/components";
-
-
 function searchIndex(index: number[] | Todo, object?: any, print: boolean = false) : Todo {
   if (Array.isArray(index)) {
     let item = object;
@@ -16,21 +13,11 @@ function searchIndex(index: number[] | Todo, object?: any, print: boolean = fals
   
 }
 
-export interface Todo {
+interface Todo {
   children?: Todo[],
   collapse?: boolean,
   task?: string
 }
-
-// Data structure of todo list : 
-// children : [{
-//  task: "do Something",
-//  children: [{
-//    task: "Do something's child"
-//  }]
-// },{
-//  task: " Do some other thing"
-// }]
 
 export const useTodoList = defineStore('todo', {
   state: () => {

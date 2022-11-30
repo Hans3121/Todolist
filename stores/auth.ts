@@ -37,12 +37,6 @@ export const useAuth = defineStore("user", ()=>{
 
         // Get Firestore Data
         useFirestore().getData(data.uid)
-          .then(todoList => {
-            useTodoList().todoList = todoList?.data;
-          })
-          .catch(err => {
-            console.log(err);
-          })
       } else {
         navigateTo("/");
       }
