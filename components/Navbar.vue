@@ -8,10 +8,11 @@
       Add a button to revert to defaults
     
     -->
-    <div class="flex gap-2">
-      <NuxtLink to="/settings" class="button">Settings</NuxtLink>
+    <div class="flex gap-2 items-center">
+      <NuxtLink to="/todoList" v-if="$route.path != '/todoList'" class="button h-fit">TodoList</NuxtLink>
+      <NuxtLink to="/settings" v-if="$route.path != '/settings'" class="button h-fit">Settings</NuxtLink>
       <!-- Log Out Button -->
-      <button @click="useAuth().signOut" class="button">Log Out</button>
+      <button @click="useAuth().signOut" class="button h-fit flex-shrink-0">Log Out</button>
     </div>
   </div>
 </template>

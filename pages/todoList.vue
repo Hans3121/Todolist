@@ -1,9 +1,8 @@
 <script setup>
 
-let auth = useAuth();
 let firestore = useFirestore();
-let todolist = useTodoList();
-
+let todoList = useTodoList();
+let undo = useTodoUndo();
 let isSaving = ref(false);
 
 function saveData() {
@@ -13,14 +12,22 @@ function saveData() {
       isSaving.value = false;
     })
 }
+
 </script>
 
 <template>
 
   <NuxtLayout>
-    <div class="flex flex-col items-stretch w-full">
-      <Todo class=" mt-4 w-full" :index="[]"/>
-    </div>
+    <!-- Add UNDO REDO -->
+    <button class="button my-8 mx-auto" @click="undo.undo()">
+      Undo
+    </button>
+
+    <button class="button mb-8 mx-auto" @click="todoList.addTask([])">
+      Add more Task
+    </button>
+
+    <Todo class=" mt-4 w-full" :index="[]"/>
 
     <button class="button m-8 mb-2" @click="saveData">
       Save

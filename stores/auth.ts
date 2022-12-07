@@ -33,7 +33,9 @@ export const useAuth = defineStore("user", ()=>{
     _auth.onAuthStateChanged(async (data)=>{
       user.value = data;
       if (data) {
-        navigateTo("/todoList");
+        if (useRoute().path == "/") {
+          navigateTo("/todoList");
+        }
 
         // Get Firestore Data
         useFirestore().getData(data.uid)

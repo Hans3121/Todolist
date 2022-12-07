@@ -15,12 +15,15 @@ const store = useTodoList();
 // Using taskobject references
 const taskObject = ref(store.taskObject(props.index));
 const task = ref(store.task(taskObject.value));
+const taskComputed = computed(()=>{
+  return store.task(taskObject.value)
+})
 const isNotRoot = props.index.length != 0;
 
 // Styles
 
-const currentColor = useSettings().getColor(props.index);
-const textColor = useSettings().getTextColor(props.index);
+const currentColor = useSettings().getColor(props.index.length - 1 );
+const textColor = useSettings().getTextColor(props.index.length - 1);
 
 function print(str: any) {
   console.log(str);
@@ -28,15 +31,16 @@ function print(str: any) {
 </script>
 
 <template>
-  <button v-if="!isNotRoot" class="button my-8 mx-auto" @click="store.addTask([])">
-    Add more Task
-  </button>
+
 
   <div class="flex flex-col" :class="isNotRoot ? 'pl-4' : 'mr-2 border-r'">
     <!-- Row -->
     <div class="flex w-full pl-4 py-1 pr-3 " v-if="isNotRoot" :style="{ backgroundColor: currentColor }">
+
       <!-- Actual Task -->
-      <input type="text" v-model="task" @focusout="store.editTask(taskObject, task ? task : '')"
+      <input type="text" :value="taskComputed" 
+        @input="event => task = event?.target?.value" 
+        @focusout="store.editTask(taskObject, task ? task : '')"
         class=" outline-none flex-grow focus:border m-[1px] focus:m-0"
         :style="{ color: textColor, backgroundColor: currentColor, borderColor: textColor }" />
 

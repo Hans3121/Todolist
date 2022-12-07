@@ -38,7 +38,7 @@ export const useTodoList = defineStore('todo', {
       return (index: number[] | Todo) => searchIndex(index, state.todoList).task
     },
     childCount : (state) => {
-      return (index: number[] | Todo) => searchIndex(index, state.todoList).children?.length
+      return (index: number[] | Todo) => searchIndex(index, state.todoList)?.children?.length
     },
     collapse : (state) =>{
       return (index: number[] | Todo) => searchIndex(index, state.todoList).collapse
@@ -47,33 +47,74 @@ export const useTodoList = defineStore('todo', {
   },
   
   actions: {
-    editTask(index: number[] | Todo, newTask: string) {
-      let _task:any = searchIndex(index, this.todoList);
-      _task.task = newTask
+    // Setup
+    setTask(todoList : Todo | null) {
+      if (todoList) {
+        this.todoList = todoList
+      } else {
+        this.todoList = {
+          children: [{
+            task: ""
+          }]
+        }
+      }
     },
-    // Remove Task
+
+    // With Undo
+    editTask(index: number[] | Todo, newTask: string, doUndo = true) {
+
+      // Get Task
+      let task:any = searchIndex(index, this.todoList);
+
+      // Push Undo
+      if (doUndo && task.task != newTask) {
+        useTodoUndo().addUndo(()=>{
+          this.editTask(index, task.task, false);
+        })
+      }
+
+      task.task = newTask
+    },
     removeTask(index: number[]) {
+      // Get parent Todo
       let final = index.pop();
       let task = searchIndex(index, this.todoList);
+
       if (final != undefined) { 
-        task.children?.splice(final, 1);
+        // Remove
+        let removedTask = task.children?.splice(final, 1);
+
+        // Push Todo Command
+        useTodoUndo().addUndo(()=>{
+            if (final != undefined && removedTask) {
+              task.children?.splice(final, 0, removedTask[0]);
+            }
+        })
       }    
     },
-    // AddTask
     addTask(index: number[] | Todo) {
-      let _task = searchIndex(index, this.todoList);
-      if (!_task.children) {
-        _task.children = []
-      }
-      _task.children.push({
+      // Getting task.children
+      let task = searchIndex(index, this.todoList);
+      if (!task.children) {task.children = []}
+
+      // Modify
+      task.children.push({
         task: "Newly Added Task",
         children: []
       })
+
+      // Add Undo 
+      useTodoUndo().addUndo(()=>{
+        task.children?.pop()
+      })
     },
+
+    // No Undo
     toggleCollapse(index: number[] | Todo) {
       let task = searchIndex(index, this.todoList);
       task.collapse = !task.collapse
     },
+
     // Export Todo List
 
 
