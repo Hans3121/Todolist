@@ -15,9 +15,6 @@ const store = useTodoList();
 // Using taskobject references
 const taskObject = ref(store.taskObject(props.index));
 const task = ref(store.task(taskObject.value));
-const taskComputed = computed(()=>{
-  return store.task(taskObject.value)
-})
 const isNotRoot = props.index.length != 0;
 
 // Styles
@@ -38,7 +35,8 @@ function print(str: any) {
     <div class="flex w-full pl-4 py-1 pr-3 " v-if="isNotRoot" :style="{ backgroundColor: currentColor }">
 
       <!-- Actual Task -->
-      <input type="text" :value="taskComputed" 
+      <input type="text" :value="store.task(taskObject)" 
+        @focusin="() => task = store.task(taskObject)"
         @input="event => task = event?.target?.value" 
         @focusout="store.editTask(taskObject, task ? task : '')"
         class=" outline-none flex-grow focus:border m-[1px] focus:m-0"

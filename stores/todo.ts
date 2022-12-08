@@ -1,3 +1,5 @@
+
+
 function searchIndex(index: number[] | Todo, object?: any, print: boolean = false) : Todo {
   if (Array.isArray(index)) {
     let item = object;
@@ -26,7 +28,8 @@ export const useTodoList = defineStore('todo', {
         children: [{
           task: "Loading todolist",
         }
-      ]} as Todo
+      ]} as Todo,
+      hasChanges : false
     }
   },
 
@@ -42,6 +45,9 @@ export const useTodoList = defineStore('todo', {
     },
     collapse : (state) =>{
       return (index: number[] | Todo) => searchIndex(index, state.todoList).collapse
+    },
+    hasUnsavedData : (state)=>{
+      return (state.hasChanges && useTodoUndo().undoList.length > 0)
     }
     
   },
@@ -60,20 +66,21 @@ export const useTodoList = defineStore('todo', {
       }
     },
 
-    // With Undo
+    // Mutations
     editTask(index: number[] | Todo, newTask: string, doUndo = true) {
 
       // Get Task
       let task:any = searchIndex(index, this.todoList);
+      let oldTask = task.task;
+      task.task = newTask;
 
       // Push Undo
-      if (doUndo && task.task != newTask) {
+      if (doUndo && oldTask != newTask) {
         useTodoUndo().addUndo(()=>{
-          this.editTask(index, task.task, false);
+          this.editTask(index, oldTask, false);
         })
       }
-
-      task.task = newTask
+      this.hasChanges = true;
     },
     removeTask(index: number[]) {
       // Get parent Todo
@@ -91,6 +98,7 @@ export const useTodoList = defineStore('todo', {
             }
         })
       }    
+      this.hasChanges = true;
     },
     addTask(index: number[] | Todo) {
       // Getting task.children
@@ -106,18 +114,25 @@ export const useTodoList = defineStore('todo', {
       // Add Undo 
       useTodoUndo().addUndo(()=>{
         task.children?.pop()
-      })
+      });
+      this.hasChanges = true;
     },
-
-    // No Undo
     toggleCollapse(index: number[] | Todo) {
       let task = searchIndex(index, this.todoList);
-      task.collapse = !task.collapse
+      task.collapse = !task.collapse;
+
+      //Undo
+      useTodoUndo().addUndo(()=>{
+        task.collapse = !task.collapse
+      });
+
+      this.hasChanges = true
     },
 
     // Export Todo List
-
-
+    
+    
     // Import Todo List
   }
 })
+
