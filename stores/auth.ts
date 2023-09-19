@@ -47,13 +47,14 @@ export const useAuth = defineStore("user", ()=>{
   }
 
   async function signIn(callback: Function | null){
-    await signInWithRedirect(_auth, new GoogleAuthProvider());
+    await signInWithPopup(_auth, new GoogleAuthProvider())
     const result = await getRedirectResult(_auth);
     if (result) {
       if (callback) { callback() }
     }
       
   }
+  // Add new sign in methods
 
   function signOut(){
     _auth.signOut();

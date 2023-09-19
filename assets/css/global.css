@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 body {
+  color: theme("colors.slate.700");
   background-color: theme("colors.slate.300");
   min-height: 100vh;
 }
