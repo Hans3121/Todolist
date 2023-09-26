@@ -1,12 +1,11 @@
 import { initializeApp } from "firebase/app";
 const firebaseConfig = {
-  apiKey: "AIzaSyCJs1zKJ8LPtErCwCFD0VY4t8hFzleBa2U",
-  authDomain: "nuxt-firebase-learning.firebaseapp.com",
-  projectId: "nuxt-firebase-learning",
-  storageBucket: "nuxt-firebase-learning.appspot.com",
-  messagingSenderId: "859878430221",
-  appId: "1:859878430221:web:1152551b6bbc7b29e6a744",
-  measurementId: "G-C82TE6EWMW"
+  apiKey: "AIzaSyAm57VcSieKjD1uoEuK-YrV4wm8Um0ezNM",
+  authDomain: "todolist-9c39f.firebaseapp.com",
+  projectId: "todolist-9c39f",
+  storageBucket: "todolist-9c39f.appspot.com",
+  messagingSenderId: "248738989307",
+  appId: "1:248738989307:web:217dad2b21436eb7d0dc5e"
 };
 
 // Initialize Firebase

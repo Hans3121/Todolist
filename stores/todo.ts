@@ -60,7 +60,10 @@ export const useTodoList = defineStore('todo', {
       } else {
         this.todoList = {
           children: [{
-            task: ""
+            task: "Enter your task here",
+            children: [{
+              task: "And add subtasks here"
+            }]
           }]
         }
       }
