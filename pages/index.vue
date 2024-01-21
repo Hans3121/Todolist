@@ -5,7 +5,7 @@ const auth = useAuth();
 
 <template>
  <div class="flex flex-col items-center justify-center h-screen">
-    <button class="button" @click="auth.signIn">Log In</button>
+    <button class="button" @click="auth.signIn">Log In with Google</button>
  </div>
 </template>
 

@@ -38,8 +38,14 @@ export const useSettings = defineStore("settings", ()=>{
     if (setting) {
       settings.value = setting
     } else {
-      settings.value = defaults
+      settings.value.colorPallete = defaults.colorPallete
+      settings.value.textColorPallete = defaults.textColorPallete
     }
+  }
+
+  function setDefault() {
+    settings.value.colorPallete = defaults.colorPallete
+    settings.value.textColorPallete = defaults.textColorPallete
   }
 
 
@@ -88,6 +94,7 @@ export const useSettings = defineStore("settings", ()=>{
     longestLength,
     
     setSettings,
+    setDefault,
 
     getColor,
     getTextColor,
